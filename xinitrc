@@ -44,8 +44,9 @@ xset r rate 300 30
 nitrogen --restore &
 while true
 do
-   dwm >/dev/null 2>&1
-   xsetroot -name "$( date )"
-   sleep 1    # Update time every second
+    dwm >/dev/null 2>&1
+    xsetroot -name "$( date )"
+    sleep 1    # Update time every second
 done &
+#dwmstatus 2>&1 >/dev/null &
 exec dwm
