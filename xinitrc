@@ -48,5 +48,4 @@ do
     xsetroot -name "$( date )"
     sleep 1    # Update time every second
 done &
-#dwmstatus 2>&1 >/dev/null &
 exec dwm
