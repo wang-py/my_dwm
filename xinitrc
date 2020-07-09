@@ -42,10 +42,11 @@ fi
 #export KDEWM=/usr/local/bin/dwm
 xset r rate 300 30
 nitrogen --restore &
+dwmblocks &
 while true
 do
     dwm >/dev/null 2>&1
-    xsetroot -name "$( date )"
-    sleep 1    # Update time every second
+#    xsetroot -name "$( date )"
+#    sleep 1    # Update time every second
 done &
 exec dwm
