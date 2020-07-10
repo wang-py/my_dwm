@@ -39,7 +39,7 @@ fi
 #export GTK_IM_MODULE=fcitx
 #export QT_IM_MODULE=fcitx
 #export XMODIFIERS=@im=fcitx
-#export KDEWM=/usr/local/bin/dwm
+export KDEWM=/usr/local/bin/dwm
 xset r rate 300 30
 nitrogen --restore &
 dwmblocks &
