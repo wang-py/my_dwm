@@ -39,10 +39,15 @@ fi
 #export GTK_IM_MODULE=fcitx
 #export QT_IM_MODULE=fcitx
 #export XMODIFIERS=@im=fcitx
-export KDEWM=/usr/local/bin/dwm
+#export KDEWM=/usr/local/bin/dwm
+# faster xinput
 xset r rate 300 30
+# wallpaper
 nitrogen --restore &
+# status bar
 dwmblocks &
+# auto display temperature
+redshift >/dev/null 2>&1 &
 while true
 do
     dwm >/dev/null 2>&1
