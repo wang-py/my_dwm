@@ -48,10 +48,9 @@ nitrogen --restore &
 dwmblocks &
 # auto display temperature
 redshift >/dev/null 2>&1 &
+
 while true
 do
     dwm >/dev/null 2>&1
-#    xsetroot -name "$( date )"
-#    sleep 1    # Update time every second
 done &
 exec dwm
