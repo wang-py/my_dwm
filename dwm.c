@@ -241,6 +241,8 @@ static void zoom(const Arg *arg);
 static const char broken[] = "broken";
 static char stext[256];
 static char rawstext[256];
+static int dwmblockssig;
+pid_t dwmblockspid = 0;
 static int statuscmdn;
 static char lastbutton[] = "-";
 static int screen;
