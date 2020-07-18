@@ -36,13 +36,13 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-fcitx &
-
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 #export KDEWM=/usr/local/bin/dwm
 export TERMINAL=konsole
+#picom &
+fcitx &
 # faster xinput
 xset r rate 300 30
 # wallpaper
@@ -55,5 +55,5 @@ redshift >/dev/null 2>&1 &
 while true
 do
     dwm >/dev/null 2>&1
-done &
+done 
 exec dwm
