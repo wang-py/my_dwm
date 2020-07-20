@@ -12,11 +12,13 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
-static const char col_blue[]        = "#4891b5";
+//using hatsune miku's color
+static const char col_blue[]        = "#86cecb"; //"#4891b5";
+static const char col_gray5[]       = "#373b3e"; 
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_blue,  col_blue  },
+	[SchemeSel]  = { col_gray5, col_blue,  col_blue  },
 };
 
 /* tagging */
