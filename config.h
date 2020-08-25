@@ -5,7 +5,11 @@ static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monaco:size=10", "fontawesome:size=10", "noto sans sc:size=10" }; //
+/* supports color emoji, font awesome icons and Simplified Chinese */
+static const char *fonts[]          = { "monaco:size=10", 
+                                        "fontawesome:size=10", 
+                                        "noto sans sc:size=10", 
+                                        "noto color emoji:size=10" };
 static const char dmenufont[]       = "monaco:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
