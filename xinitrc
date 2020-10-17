@@ -41,7 +41,7 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 #export KDEWM=/usr/local/bin/dwm
 export TERMINAL=konsole
-#picom &
+picom --vsync &
 fcitx &
 # faster xinput
 xset r rate 300 30
@@ -51,7 +51,9 @@ nitrogen --restore &
 dwmblocks &
 # auto display temperature
 redshift >/dev/null 2>&1 &
-
+# no screensaving
+xset -dpms
+xset s off
 while true
 do
     dwm >/dev/null 2>&1
