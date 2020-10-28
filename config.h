@@ -40,6 +40,7 @@ static const Rule rules[] = {
 	{ "Brave-browser",  NULL,       NULL,       1 << 3,       0,           -1 },
 	{ "Spotify",    	NULL,       NULL,       1 << 4,       0,           -1 },
 	{ "Firefox",  		NULL,       NULL,       1 << 5,       0,           -1 },
+	{ "Zoom",  			NULL,       NULL,       1 << 6,       0,           -1 },
 };
 
 /* layout(s) */
