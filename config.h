@@ -37,10 +37,9 @@ static const Rule rules[] = {
 	{ "Gimp",     		NULL,       NULL,       0,            1,           -1 },
 	{ "Code",     		NULL,       NULL,       1,	  	      0,           -1 },
 	{ "konsole",   	 	NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "Brave-browser",  NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "firefox",  		NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Spotify",    	NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "firefox",  		NULL,       NULL,       1 << 4,       0,           -1 },
-	{ "zoom",  			NULL,       NULL,       1 << 5,       1,           -1 },
+	{ "zoom",  			NULL,       NULL,       1 << 4,       0,           -1 },
 };
 
 /* layout(s) */
