@@ -156,6 +156,7 @@ static void clientmessage(XEvent *e);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
+// static void copyvalidchars(char *text, char *rawtext);
 static Monitor *createmon(void);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
@@ -170,6 +171,7 @@ static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static Atom getatomprop(Client *c, Atom prop);
+static int getdwmblockspid();
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -205,6 +207,7 @@ static void setmfact(const Arg *arg);
 static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
+static void sigdwmblocks(const Arg *arg);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
@@ -236,6 +239,11 @@ static void zoom(const Arg *arg);
 
 /* variables */
 static const char broken[] = "broken";
+static char rawstext[256];
+static int dwmblockssig;
+pid_t dwmblockspid = 0;
+//static int statuscmdn;
+//static char lastbutton[] = "-";
 static char stext[256];
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
@@ -423,6 +431,7 @@ buttonpress(XEvent *e)
 	Client *c;
 	Monitor *m;
 	XButtonPressedEvent *ev = &e->xbutton;
+    // *lastbutton = '0' + ev->button;
 
 	click = ClkRootWin;
 	/* focus monitor if necessary */
@@ -441,9 +450,28 @@ buttonpress(XEvent *e)
 			arg.ui = 1 << i;
 		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
 			click = ClkLtSymbol;
-		else if (ev->x > selmon->ww - (int)TEXTW(stext))
+		//else if (ev->x > selmon->ww - (int)TEXTW(stext))
+        else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
 			click = ClkStatusText;
-		else
+            char *text = rawstext;
+			int i = -1;
+			char ch;
+			//statuscmdn = 0;
+            dwmblockssig = 0;
+			while (text[++i]) {
+				if ((unsigned char)text[i] < ' ') {
+					ch = text[i];
+					text[i] = '\0';
+					x += TEXTW(text) - lrpad;
+					text[i] = ch;
+					text += i+1;
+					i = -1;
+					if (x >= ev->x) break;
+					//if (ch <= LENGTH(statuscmds)) statuscmdn = ch - 1;
+                    dwmblockssig = ch;
+                }
+            }
+        } else
 			click = ClkWinTitle;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
@@ -629,6 +657,18 @@ configurerequest(XEvent *e)
 	}
 	XSync(dpy, False);
 }
+
+// void
+// copyvalidchars(char *text, char *rawtext)
+// {
+// 	int i = -1, j = 0;
+// 	while(rawtext[++i]) {
+// 		if ((unsigned char)rawtext[i] >= ' ') {
+// 			text[j++] = rawtext[i];
+// 		}
+// 	}
+// 	text[j] = '\0';
+// }
 
 Monitor *
 createmon(void)
@@ -875,6 +915,18 @@ getatomprop(Client *c, Atom prop)
 		XFree(p);
 	}
 	return atom;
+}
+
+int
+getdwmblockspid()
+{
+	char buf[16];
+	FILE *fp = popen("pidof -s dwmblocks", "r");
+	fgets(buf, sizeof(buf), fp);
+	pid_t pid = strtoul(buf, NULL, 10);
+	pclose(fp);
+	dwmblockspid = pid;
+	return pid != 0 ? 0 : -1;
 }
 
 int
@@ -1651,6 +1703,10 @@ spawn(const Arg *arg)
 
 	if (arg->v == dmenucmd)
 		dmenumon[0] = '0' + selmon->num;
+//    else if (arg->v == statuscmd) {
+//		statuscmd[2] = statuscmds[statuscmdn];
+//		setenv("BUTTON", lastbutton, 1);
+//	}
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
@@ -1663,6 +1719,22 @@ spawn(const Arg *arg)
 
 		execvp(((char **)arg->v)[0], (char **)arg->v);
 		die("dwm: execvp '%s' failed:", ((char **)arg->v)[0]);
+	}
+}
+
+void
+sigdwmblocks(const Arg *arg)
+{
+	union sigval sv;
+	sv.sival_int = (dwmblockssig << 8) | arg->i;
+	if (!dwmblockspid)
+		if (getdwmblockspid() == -1)
+			return;
+	if (sigqueue(dwmblockspid, SIGUSR1, sv) == -1) {
+		if (errno == ESRCH) {
+			if (!getdwmblockspid())
+				sigqueue(dwmblockspid, SIGUSR1, sv);
+		}
 	}
 }
 
@@ -2005,7 +2077,8 @@ updatesizehints(Client *c)
 void
 updatestatus(void)
 {
-	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
+//	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
+    if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext)))
 		strcpy(stext, "dwm-"VERSION);
 	drawbar(selmon);
 }
