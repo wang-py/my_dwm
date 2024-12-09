@@ -5,7 +5,7 @@ static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monaco:size=10" };
+static const char *fonts[]          = { "monaco:size=10", "fontawesome:size=10" };
 static const char dmenufont[]       = "monaco:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -59,6 +59,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "konsole", NULL };
+// static char *statuscmds[] = {"notify-send Mouse$BUTTON"};
+// static char *statuscmd[] = {"/bin/sh", "-c", NULL, NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -108,6 +110,9 @@ static const Button buttons[] = {
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.v = (const Arg*)1 } },
+	{ ClkStatusText,        0,              Button2,        sigdwmblocks,   {.v = (const Arg*)2 } },
+	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.v = (const Arg*)3 } },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
