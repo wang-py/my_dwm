@@ -41,10 +41,11 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 #export KDEWM=/usr/local/bin/dwm
 export TERMINAL=konsole
-picom --vsync &
+# picom --vsync &
+nvidia-settings --load-config-only &
 fcitx &
 # faster xinput
-xset r rate 300 30
+xset r rate 300 30 &
 # wallpaper
 nitrogen --restore &
 # status bar
